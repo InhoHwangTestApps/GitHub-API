@@ -14,6 +14,8 @@ class LatestCommitsViewController: UIViewController{
     @IBOutlet var tableView: UITableView!
     @IBOutlet var spinner: UIActivityIndicatorView!
     let refreshControl = UIRefreshControl()
+    let gitHubOwnerName = "InhoHwangTestApps"
+    let gitHubRepoName = "GitHub-API"
     
     var currentlyFetchingCommits = false
     var commitViewModelArray = [CommitViewModel]()
@@ -36,7 +38,7 @@ class LatestCommitsViewController: UIViewController{
     func fetchUpTo25LatestCommits() {
         currentlyFetchingCommits = true;
         self.spinner.startAnimating()
-        SimpleServerCall.init().gitHubAPIGET(endPartOfUrlWithoutSlashInFront: "repos/InhoHwangTestApps/GitHub-API/commits", parameters: ["sha":"main", "per_page":25, "page": "0"], tryAgainOnceIfFailed: true, completionHandler: { (success, response, error) in
+        SimpleServerCall.init().gitHubAPIGET(endPartOfUrlWithoutSlashInFront: "repos/\(gitHubOwnerName)/\(gitHubRepoName)/commits", parameters: ["sha":"main", "per_page":25, "page": "0"], tryAgainOnceIfFailed: true, completionHandler: { (success, response, error) in
             if (success) {
                 self.commitViewModelArray = GitHubAPIDecoder.getListOfCommmitViewModels(gitHubResponseOfListOfCommits: response)
                 self.tableView.reloadData()
@@ -68,7 +70,7 @@ extension LatestCommitsViewController: UITableViewDataSource, UITableViewDelegat
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return  "InhoHwangTestApps/GitHub-API"
+        return  "\(gitHubOwnerName)/\(gitHubRepoName)"
     }
     
 }
