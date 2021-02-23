@@ -12,11 +12,6 @@ class SimpleServerCall {
     private let gitHubAPIBaseUrl = "https://api.github.com/"
     private let gitHubAPIRecommendedHeaders = ["accept":"application/vnd.github.v3+json"]
 
-    static let shared = SimpleServerCall()
-    
-    private init() {
-    }
-    
     func simpleServerCallGET(fullUrlString: String, parameters: Dictionary<String, Any>?, headers: [String : String]?, tryAgainOnceIfFailed: Bool, completionHandler: @escaping (Bool, Any?, Error?) -> ()) {
         let manager = AFHTTPSessionManager.init()
         manager.requestSerializer.timeoutInterval = 10;

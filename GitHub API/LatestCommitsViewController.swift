@@ -36,7 +36,7 @@ class LatestCommitsViewController: UIViewController{
     func fetchUpTo25LatestCommits() {
         currentlyFetchingCommits = true;
         self.spinner.startAnimating()
-        SimpleServerCall.shared.gitHubAPIGET(endPartOfUrlWithoutSlashInFront: "repos/InhoHwangTestApps/GitHub-API/commits", parameters: ["sha":"main", "per_page":25, "page": "0"], tryAgainOnceIfFailed: true, completionHandler: { (success, response, error) in
+        SimpleServerCall.init().gitHubAPIGET(endPartOfUrlWithoutSlashInFront: "repos/InhoHwangTestApps/GitHub-API/commits", parameters: ["sha":"main", "per_page":25, "page": "0"], tryAgainOnceIfFailed: true, completionHandler: { (success, response, error) in
             if (success) {
                 self.commitViewModelArray = GitHubAPIDecoder.getListOfCommmitViewModels(gitHubResponseOfListOfCommits: response)
                 self.tableView.reloadData()
@@ -65,6 +65,10 @@ extension LatestCommitsViewController: UITableViewDataSource, UITableViewDelegat
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CommitTableViewCell
         cell.bindWithViewModel(commitViewModel:self.commitViewModelArray[indexPath.row])
         return cell;
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return  "InhoHwangTestApps/GitHub-API"
     }
     
 }
